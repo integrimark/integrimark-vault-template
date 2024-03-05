@@ -1,0 +1,35 @@
+name: IntegriMark Publishing Workflow
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+        - '**.pdf'
+        - 'passwords.json'
+
+jobs:
+  integrimark_job:
+    name: Process PDFs with IntegriMark
+    runs-on: ubuntu-latest
+    permissions:
+        actions: write
+        checks: write
+        contents: write
+        deployments: write
+        pull-requests: write
+        repository-projects: write
+    
+    steps:
+        - name: 🛎️ Checkout Code
+          uses: actions/checkout@v4
+        
+        - name: 🔐 Run IntegriMark Action
+          uses: jlumbroso/integrimark-publish-action@v0.10.0-beta
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            #base_url: # Optional: Set this in your repository's secrets if you have a specific base URL
+            files: "*.pdf" # Optional: Customize this if you want to specify certain PDF files
+            #domain: example.com # Optional: Set this if you have a custom domain for GitHub Pages
+
+        # Add any other steps you need here
